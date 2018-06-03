@@ -40,6 +40,18 @@ sorted_deck = Deck(sorted(make_french_deck()))
 print(f'sorted_deck: {sorted_deck}')
 
 
+@dataclass(frozen=True)
+class ImmutableCard:
+    rank: str
+    suit: str
+
+
+my_card = ImmutableCard(rank='A', suit='Spades')
+try:
+    my_card.suit = 'Hearts'
+except Exception as ex:
+    print(f'Error: {ex}')
+
 print('-' * 40)
 
 
@@ -67,3 +79,30 @@ vancouver = Position('Vancouver', -123.1, 49.3)
 null_island = Position('Null Island')
 print(f'null_island: name={null_island.name!r}, lon={null_island.lon}, lat={null_island.lat}')
 print(f'Distance between Oslo and Vancouver: {oslo.distance_to(vancouver)}')
+
+
+@dataclass
+class Capital(Position):
+    country: str = ''  # needs a default argument because previous fields have them
+
+
+capital = Capital(name='A Capital')
+print(f'{capital.name} - LonLat: {capital.lon}, {capital.lat}')
+
+print('-' * 40)
+
+
+@dataclass
+class SimplePosition:
+    name: str
+    lon: float
+    lat: float
+
+
+@dataclass
+class SlotPosition:
+    __slots__ = ['name', 'lon', 'lat']
+
+    name: str
+    lon: float
+    lat: float
